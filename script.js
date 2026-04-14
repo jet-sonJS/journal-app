@@ -22,14 +22,20 @@ function saveEntry(text) {
 function displayEntries() {
     const entries = JSON.parse(localStorage.getItem('journalEntries')) || [];
     entryHistory.innerHTML = '';
+    if (entries.length === 0) {
+        entryHistory.innerHTML = '<p>No entries yet. Start journaling!</p>';
+        return;
+    }
     entries.forEach((entry, index) => {
         const entryDiv = document.createElement('div');
         entryDiv.classList.add('entry');
         entryDiv.innerHTML = `
             <p>Text: ${entry.text}</p>
             <small>Time: ${new Date(entry.timestamp).toLocaleString()}</small><br>
-            <button class="btn btn-info" data-index="${index}">Edit</button>
-            <button class="btn btn-danger" data-index="${index}">Delete</button>
+            <div class="btn-group-vertical">
+                <button class="btn btn-info" data-index="${index}">Edit</button>
+                <button class="btn btn-danger" data-index="${index}">Delete</button>
+            </div>
         `;
         entryHistory.appendChild(entryDiv);
     });
@@ -59,7 +65,7 @@ function editEntry(index) {
             localStorage.setItem('journalEntries', JSON.stringify(entries));
             entryInput.value = '';
             deleteEntry(index - 1);
-            displayEntries();
+            displayEntries("Entry updated successfully.", "success");
             $('#entry-container').modal('hide');
         }
     };
