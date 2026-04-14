@@ -4,9 +4,41 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Journal App</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+    <button id="open-modal" class="btn btn-primary" data-toggle="modal" data-target="#entry-container">Add Entry</button>
+
+    <div class="modal fade" id="entry-container" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">New Journal Entry</h4>
+                </div>
+                <div class="modal-body">
+                    <textarea id="entry-input" placeholder="Type here..." class="form-control" rows="5" style="width:50%"></textarea><br>
+                    <button id="save" class="btn btn-default" data-dismiss="modal">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <h1>My Journal</h1>
+    <div id="entry-history"></div>
     <script src="script.js"></script>
 </body>
 </html>
+
+<!-- 
+    Checklist:
+    - [x] Text input for journal entries. ✔️
+    - [x] Save button to store entries. ✔️
+    - [x] Store entries in localStorage.
+    - [x] Display saved entries.
+    - [x] Edit and delete functionality for entries.
+    - [x] Responsive design for mobile and desktop.
+-->
