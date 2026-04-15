@@ -4,7 +4,7 @@ const entryHistory = document.getElementById('entry-history');
 
 addEventListener('DOMContentLoaded', displayEntries);
 addEventListener("DOMContentLoaded", () => {
-    entryInput.innerHTML = '';
+    entryInput.value = '';
 });
 
 saveButton.addEventListener('click', () => {

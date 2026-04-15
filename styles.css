@@ -11,7 +11,6 @@ body {
 }
 
 h1 {
-    margin-left: 5.3%;
     margin-bottom: 20px;
 }
 
@@ -57,6 +56,7 @@ textarea {
 
 #add-entry {
     float: right;
+    margin-top: 90vh;
 }
 
 .alert {
