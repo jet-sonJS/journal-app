@@ -38,7 +38,7 @@ function displayEntries() {
     }
     entries.forEach((entry, index) => {
         const entryDiv = document.createElement('div');
-        entryDiv.classList.add('entry', 'well');
+        entryDiv.classList.add('entry', 'panel', 'panel-default');
         entryDiv.innerHTML = `
             <p>Text: ${entry.text}</p>
             <small>Time: ${new Date(entry.timestamp).toLocaleString()}</small><br>
