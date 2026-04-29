@@ -1,26 +1,53 @@
 const entryInput = document.getElementById('entry-input');
 const saveButton = document.getElementById('save');
 const entryHistory = document.getElementById('entry-history');
+const modal = document.getElementById('entry-container');
+
+let editIndex = null;
 
 addEventListener('DOMContentLoaded', displayEntries);
 addEventListener("DOMContentLoaded", () => {
     entryInput.value = '';
+    modal.classList.remove('show');
+    document.getElementById('add-entry').addEventListener('click', () => {
+       modal.classList.add('show');
+    });
+
+    document.querySelector('.close').addEventListener('click', () => {
+        modal.classList.remove('show');
+    });
 });
 
 saveButton.addEventListener('click', () => {
     const entryText = entryInput.value.trim();
-    if (entryText) {
-        saveEntry(entryText);
-        entryInput.value = '';
-        displayEntries();
-        entryHistory.insertAdjacentHTML('afterbegin', '<div class="alert alert-success" role="alert">Entry saved successfully.</div>');
-        setTimeout(() => {
-            const alert = entryHistory.querySelector('.alert');
-            if (alert) {
-                alert.remove();
-            }
-        }, 2000);
+    if (!entryText) return;
+
+    const entries = JSON.parse(localStorage.getItem('journalEntries')) || [];
+
+    if (editIndex !== null) {
+        entries[editIndex].text = entryText;
+        entries[editIndex].timestamp = new Date().toISOString();
+        editIndex = null;
+
+        entryHistory.insertAdjacentHTML('afterbegin',
+            '<div class="alert">Entry updated successfully.</div>');
+    } else {
+        entries.push({ text: entryText, timestamp: new Date().toISOString() });
+
+        entryHistory.insertAdjacentHTML('afterbegin',
+            '<div class="alert">Entry saved successfully.</div>');
     }
+
+    localStorage.setItem('journalEntries', JSON.stringify(entries));
+
+    entryInput.value = '';
+    displayEntries();
+    modal.classList.remove('show');
+
+    setTimeout(() => {
+        const alert = entryHistory.querySelector('.alert');
+        if (alert) alert.remove();
+    }, 2000);
 });
 
 function saveEntry(text) {
@@ -39,6 +66,7 @@ function displayEntries() {
     entries.forEach((entry, index) => {
         const entryDiv = document.createElement('div');
         entryDiv.classList.add('entry', 'panel', 'panel-default');
+        entryDiv.style.animationDelay = `${index * 0.05}s`;
         entryDiv.innerHTML = `
             <p>Text: ${entry.text}</p>
             <small>Time: ${new Date(entry.timestamp).toLocaleString()}</small><br>
@@ -68,27 +96,10 @@ entryHistory.addEventListener('click', (e) => {
 function editEntry(index) {
     const entries = JSON.parse(localStorage.getItem('journalEntries')) || [];
     const entry = entries[index];
+
     entryInput.value = entry.text;
-    $('#entry-container').modal('show');
-    saveButton.onclick = () => {
-        const updatedText = entryInput.value.trim();
-        if (updatedText) {
-            entries[index].text = updatedText;
-            entries[index].timestamp = new Date().toISOString();
-            localStorage.setItem('journalEntries', JSON.stringify(entries));
-            entryInput.value = '';
-            deleteEntry(index - 1);
-            displayEntries();
-            entryHistory.insertAdjacentHTML('afterbegin', '<div class="alert alert-success" role="alert">Entry updated successfully.</div>');
-        setTimeout(() => {
-            const alert = entryHistory.querySelector('.alert');
-            if (alert) {
-                alert.remove();
-            }
-        }, 2000);
-            $('#entry-container').modal('hide');
-        }
-    };
+    editIndex = index;
+    modal.classList.add('show');
 }
 
 function deleteEntry(index) {

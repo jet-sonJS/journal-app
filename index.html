@@ -3,25 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Journal App</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+   <title>Journal App</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="https://img.magnific.com/premium-vector/form-icon-elements-books-magazines-neon-style-icons-simple-icon-websites-web-design-mo_894188-5529.jpg">
 </head>
 <body>
-    <button id="add-entry" class="btn btn-primary" data-toggle="modal" data-target="#entry-container">Add Entry</button>
+    <button id="add-entry" class="btn btn-primary">Add Entry</button>
 
-    <div class="modal fade" id="entry-container" role="dialog">
+    <div class="modal" id="entry-container">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
                     <h4 class="modal-title">New Journal Entry</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
                 </div>
                 <div class="modal-body">
-                    <textarea id="entry-input" placeholder="Type here..." class="form-control" rows="5" style="width:50%"></textarea><br>
-                    <button id="save" class="btn btn-default" data-dismiss="modal">Save</button>
+                    <textarea id="entry-input" placeholder="Type here..." rows="5"></textarea>
+                    <button id="save" class="btn btn-default">Save</button>
                 </div>
             </div>
         </div>
@@ -30,6 +28,25 @@
     <h1>My Journal</h1>
     <div id="entry-history"></div>
     <script src="script.js"></script>
+    <script>
+        var modal = document.getElementById("entry-container");
+        var btn = document.getElementById("add-entry");
+        var close = document.getElementsByClassName("close")[0];
+
+        btn.onclick = function() {
+            modal.style.display = 'flex';
+        }
+
+        close.onclick = function() {
+            modal.style.display = "none";
+        }
+
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+    </script>
 </body>
 </html>
 
