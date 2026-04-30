@@ -70,10 +70,13 @@ function displayEntries() {
         entryDiv.innerHTML = `
             <p>Text: ${entry.text}</p>
             <small>Time: ${new Date(entry.timestamp).toLocaleString()}</small><br>
+            <div class="btn-group-horizontal">
+                <button class="btn btn-open" data-index="${index}">⁝</button>
             <div class="btn-group-vertical">
                 <button class="btn btn-success" data-index="${index}">Copy</button>
                 <button class="btn btn-info" data-index="${index}">Edit</button>
                 <button class="btn btn-danger" data-index="${index}">Delete</button>
+            </div>
             </div>
         `;
         entryHistory.appendChild(entryDiv);
@@ -89,6 +92,9 @@ entryHistory.addEventListener('click', (e) => {
             deleteEntry(index);
         } else if (e.target.classList.contains('btn-success')) {
             copyEntry(index);
+        } else if (e.target.classList.contains('btn-open')) {
+            const btnGroup = e.target.nextElementSibling;
+            btnGroup.style.display = btnGroup.style.display === 'block' ? 'none' : 'block';
         }
     }
 });
