@@ -5,9 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
    <title>Journal App</title>
     <link rel="stylesheet" href="styles.css">
-    <link rel="icon" href="https://img.magnific.com/premium-vector/form-icon-elements-books-magazines-neon-style-icons-simple-icon-websites-web-design-mo_894188-5529.jpg">
+    <link rel="icon" href="https://images.stockcake.com/public/7/a/e/7ae1ed4a-bfb4-4fa8-b3ab-aaf03bacf359_large/futuristic-neon-book-stockcake.jpg">
 </head>
 <body>
+    <img src="https://images.stockcake.com/public/7/a/e/7ae1ed4a-bfb4-4fa8-b3ab-aaf03bacf359_large/futuristic-neon-book-stockcake.jpg" alt="FAVIcON" class="favicon">
     <button id="add-entry" class="btn btn-primary">Add Entry</button>
 
     <div class="modal" id="entry-container">
@@ -18,7 +19,8 @@
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                 </div>
                 <div class="modal-body">
-                    <textarea id="entry-input" placeholder="Type here..." rows="5"></textarea>
+                    
+                    <textarea id="entry-input" data-provide="markdown" placeholder="Type here..." rows="5"></textarea>
                     <button id="save" class="btn btn-default">Save</button>
                 </div>
             </div>
@@ -49,13 +51,3 @@
     </script>
 </body>
 </html>
-
-<!-- 
-    Checklist:
-    - [x] Text input for journal entries. ✔️
-    - [x] Save button to store entries. ✔️
-    - [x] Store entries in localStorage.
-    - [x] Display saved entries. ✔️
-    - [x] Edit and delete functionality for entries. ✔️
-    - [x] Responsive design for mobile and desktop.
--->

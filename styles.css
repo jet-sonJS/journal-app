@@ -18,7 +18,9 @@
 }
 
 body {
-    background: #000;
+    /* background: #000; */
+    background: url("digital-light-vortex-stockcake.jpg") fixed no-repeat;
+    background-size: 100% 106%;
     color: #e2e8f0;
     display: flex;
     flex-direction: column;
@@ -66,8 +68,8 @@ button:hover {
     margin-bottom: 15px;
     text-align: left;
     box-shadow:
-        0 0 10px #5d00ff,
-        0 0 20px #00a6ff;
+        0 0 10px #640aff,
+        0 0 15px #0baaff;
 
     text-shadow:
         0 0 6px #7c3aed,
@@ -108,6 +110,7 @@ button:hover {
 
 .modal-content {
     background: rgba(10, 10, 20, 0.85);
+    color: #e2e8f0;
     backdrop-filter: blur(18px);
     padding: 20px;
     border-radius: 20px;
@@ -206,10 +209,23 @@ textarea:focus {
 
 .btn-group-vertical { display: none; }
 
-#add-entry {
+#add-entry, .favicon {
     position: fixed;
     top: 20px;
     right: 20px;
+}
+
+.favicon {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    float: left;
+    left: 15px;
+    top: 15px;
+    box-shadow:
+        0 0 8px #5d00ff,
+        0 0 15px #00a6ff;
+    transition: transform 0.3s ease;
 }
 
 @keyframes fadeSlide {
@@ -230,6 +246,10 @@ textarea:focus {
     .modal-content {
         width: 60vw;
     }
+    body { 
+        background-image: url("https://images.stockcake.com/public/7/a/e/7ae1ed4a-bfb4-4fa8-b3ab-aaf03bacf359_large/futuristic-neon-book-stockcake.jpg"); 
+        background-size: 100% 100%;
+    }
 }
 
 @media (max-width: 500px) {
@@ -241,5 +261,12 @@ textarea:focus {
         top: auto;
         bottom: 10px;
         right: 10px;
+    }
+
+    .favicon {
+        width: 60px;
+        height: 60px;
+        top: auto;
+        bottom: 10px;
     }
 }
