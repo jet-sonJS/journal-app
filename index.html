@@ -27,6 +27,20 @@
         </div>
     </div>
 
+    <div class="modal" id="name-container">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">What's your name?</h4>
+                </div>
+                <div class="modal-body">
+                    <input type="text" id="name-input" data-provide="markdown" placeholder="Type your name here...">
+                    <button id="save-name" class="btn btn-default">Submit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <h1>My Journal</h1>
     <div id="entry-history"></div>
     <script src="script.js"></script>
@@ -39,9 +53,9 @@
             modal.style.display = 'flex';
         }
 
-        close.onclick = function() {
-            modal.style.display = "none";
-        }
+            close.onclick = function() {
+                modal.style.display = "none";
+            };
 
         window.onclick = function(event) {
             if (event.target == modal) {

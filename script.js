@@ -2,15 +2,25 @@ const entryInput = document.getElementById('entry-input');
 const saveButton = document.getElementById('save');
 const entryHistory = document.getElementById('entry-history');
 const modal = document.getElementById('entry-container');
+const nameModal = document.getElementById('name-container');
+const saveName = document.getElementById('save-name');
+const header = document.querySelector('h1');
 
 let editIndex = null;
 
-addEventListener('DOMContentLoaded', displayEntries);
+addEventListener('DOMContentLoaded', () => header.textContent = 'My Journal');
 addEventListener("DOMContentLoaded", () => {
     entryInput.value = '';
+    document.getElementById('name-input').value = '';
     modal.classList.remove('show');
+    nameModal.classList.remove('show');
+    nameModal.classList.add('show');
+
+    const storedName = localStorage.getItem('userName');
+        header.textContent = `My Journal`;
+
     document.getElementById('add-entry').addEventListener('click', () => {
-       modal.classList.add('show');
+        modal.classList.add('show');
     });
 
     document.querySelector('.close').addEventListener('click', () => {
@@ -18,11 +28,42 @@ addEventListener("DOMContentLoaded", () => {
     });
 });
 
+saveName.addEventListener('click', () => {
+    const nameInput = document.getElementById('name-input');
+    const name = nameInput.value.trim();
+
+    if (name) {
+        localStorage.setItem('userName', name);
+
+        const entries = JSON.parse(localStorage.getItem('journalEntries')) || [];
+        entries.forEach(entry => {
+            if (!entry.user) entry.user = name;
+        });
+        localStorage.setItem('journalEntries', JSON.stringify(entries));
+
+        nameModal.classList.remove('show');
+        header.textContent = `${name}'s Journal`;
+
+        entryHistory.insertAdjacentHTML('afterbegin',
+            `<div class="alert alert-success">Welcome, ${name}! Start journaling!</div>`);
+
+        setTimeout(() => {
+            const alert = entryHistory.querySelector('.alert');
+            if (alert) alert.remove();
+        }, 2000);
+
+        displayEntries();
+    } else {
+        return;
+    }
+});
+
 saveButton.addEventListener('click', () => {
     const entryText = entryInput.value.trim();
     if (!entryText) return;
 
     const entries = JSON.parse(localStorage.getItem('journalEntries')) || [];
+    const userName = localStorage.getItem('userName') || 'anonymous';
 
     if (editIndex !== null) {
         entries[editIndex].text = entryText;
@@ -32,7 +73,11 @@ saveButton.addEventListener('click', () => {
         entryHistory.insertAdjacentHTML('afterbegin',
             '<div class="alert">Entry updated successfully.</div>');
     } else {
-        entries.push({ text: entryText, timestamp: new Date().toISOString() });
+        entries.push({
+            text: entryText,
+            timestamp: new Date().toISOString(),
+            user: userName
+        });
 
         entryHistory.insertAdjacentHTML('afterbegin',
             '<div class="alert">Entry saved successfully.</div>');
@@ -50,35 +95,39 @@ saveButton.addEventListener('click', () => {
     }, 2000);
 });
 
-function saveEntry(text) {
-    const entries = JSON.parse(localStorage.getItem('journalEntries')) || [];
-    entries.push({ text, timestamp: new Date().toISOString() });
-    localStorage.setItem('journalEntries', JSON.stringify(entries));
-}
-
 function displayEntries() {
-    const entries = JSON.parse(localStorage.getItem('journalEntries')) || [];
+    const allEntries = JSON.parse(localStorage.getItem('journalEntries')) || [];
+    const userName = localStorage.getItem('userName');
+
+    const entries = allEntries.filter(entry =>
+        entry.user === userName || !entry.user
+    );
+
     entryHistory.innerHTML = '';
+
     if (entries.length === 0) {
         entryHistory.innerHTML = '<p>No entries yet. Start journaling!</p>';
         return;
     }
+
     entries.forEach((entry, index) => {
         const entryDiv = document.createElement('div');
         entryDiv.classList.add('entry', 'panel', 'panel-default');
         entryDiv.style.animationDelay = `${index * 0.05}s`;
+
         entryDiv.innerHTML = `
             <p>Text: ${entry.text}</p>
             <small>Time: ${new Date(entry.timestamp).toLocaleString()}</small><br>
             <div class="btn-group-horizontal">
                 <button class="btn btn-open" data-index="${index}">⁝</button>
-            <div class="btn-group-vertical">
-                <button class="btn btn-success" data-index="${index}">Copy</button>
-                <button class="btn btn-info" data-index="${index}">Edit</button>
-                <button class="btn btn-danger" data-index="${index}">Delete</button>
-            </div>
+                <div class="btn-group-vertical">
+                    <button class="btn btn-success" data-index="${index}">Copy</button>
+                    <button class="btn btn-info" data-index="${index}">Edit</button>
+                    <button class="btn btn-danger" data-index="${index}">Delete</button>
+                </div>
             </div>
         `;
+
         entryHistory.appendChild(entryDiv);
     });
 }
@@ -86,6 +135,7 @@ function displayEntries() {
 entryHistory.addEventListener('click', (e) => {
     if (e.target.tagName === 'BUTTON') {
         const index = e.target.getAttribute('data-index');
+
         if (e.target.classList.contains('btn-info')) {
             editEntry(index);
         } else if (e.target.classList.contains('btn-danger')) {
@@ -94,6 +144,8 @@ entryHistory.addEventListener('click', (e) => {
             copyEntry(index);
         } else if (e.target.classList.contains('btn-open')) {
             const btnGroup = e.target.nextElementSibling;
+            const openBtn = e.target;
+            openBtn.textContent = openBtn.textContent === '⁝' ? '⨯' : '⁝';
             btnGroup.style.display = btnGroup.style.display === 'block' ? 'none' : 'block';
         }
     }
@@ -113,35 +165,31 @@ function deleteEntry(index) {
     entries.splice(index, 1);
     localStorage.setItem('journalEntries', JSON.stringify(entries));
     displayEntries();
-    entryHistory.insertAdjacentHTML('afterbegin', '<div class="alert alert-success" role="alert">Entry deleted successfully.</div>');
-        setTimeout(() => {
-            const alert = entryHistory.querySelector('.alert');
-            if (alert) {
-                alert.remove();
-            }
-        }, 2000);
+
+    entryHistory.insertAdjacentHTML('afterbegin',
+        '<div class="alert alert-success">Entry deleted successfully.</div>');
+
+    setTimeout(() => {
+        const alert = entryHistory.querySelector('.alert');
+        if (alert) alert.remove();
+    }, 2000);
 }
 
 function copyEntry(index) {
     const entries = JSON.parse(localStorage.getItem('journalEntries')) || [];
     const entry = entries[index];
+
     navigator.clipboard.writeText(entry.text).then(() => {
         displayEntries();
-        entryHistory.insertAdjacentHTML('afterbegin', '<div class="alert alert-success alert-dismissible fade in" role="alert">Entry copied to clipboard.</div>');
-        setTimeout(() => {
-            const alert = entryHistory.querySelector('.alert');
-            if (alert) {
-                alert.remove();
-            }
-        }, 2000);
+        entryHistory.insertAdjacentHTML('afterbegin',
+            '<div class="alert alert-success">Entry copied to clipboard.</div>');
     }).catch(() => {
-        displayEntries();
-        entryHistory.insertAdjacentHTML('afterbegin', '<div class="alert alert-danger" role="alert">Failed to copy entry.</div>');
-        setTimeout(() => {
-            const alert = entryHistory.querySelector('.alert');
-            if (alert) {
-                alert.remove();
-            }
-        }, 2000);
+        entryHistory.insertAdjacentHTML('afterbegin',
+            '<div class="alert alert-danger">Failed to copy entry.</div>');
     });
+
+    setTimeout(() => {
+        const alert = entryHistory.querySelector('.alert');
+        if (alert) alert.remove();
+    }, 2000);
 }
