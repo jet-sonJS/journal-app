@@ -8,18 +8,17 @@
     <link rel="icon" href="https://images.stockcake.com/public/7/a/e/7ae1ed4a-bfb4-4fa8-b3ab-aaf03bacf359_large/futuristic-neon-book-stockcake.jpg">
 </head>
 <body>
-    <img src="https://images.stockcake.com/public/7/a/e/7ae1ed4a-bfb4-4fa8-b3ab-aaf03bacf359_large/futuristic-neon-book-stockcake.jpg" alt="FAVIcON" class="favicon">
+    <img src="https://images.stockcake.com/public/7/a/e/7ae1ed4a-bfb4-4fa8-b3ab-aaf03bacf359_large/futuristic-neon-book-stockcake.jpg" alt="FAVORITE" class="favicon" onclick="document.getElementById('name-container').classList.add('show')">
     <button id="add-entry" class="btn btn-primary">Add Entry</button>
 
     <div class="modal" id="entry-container">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title">New Journal Entry</h4>
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h3 class="modal-title">New Journal Entry</h3>
+                    <button type="button" class="close">&times;</button>
                 </div>
                 <div class="modal-body">
-                    
                     <textarea id="entry-input" data-provide="markdown" placeholder="Type here..." rows="5"></textarea>
                     <button id="save" class="btn btn-default">Save</button>
                 </div>
@@ -31,7 +30,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title">What's your name?</h4>
+                    <h3 class="modal-title">What's your name?</h3>
                 </div>
                 <div class="modal-body">
                     <input type="text" id="name-input" data-provide="markdown" placeholder="Type your name here...">
@@ -47,21 +46,23 @@
     <script>
         var modal = document.getElementById("entry-container");
         var btn = document.getElementById("add-entry");
-        var close = document.getElementsByClassName("close")[0];
+        var nameModal = document.getElementById("name-container");
+        var close = document.querySelector(".close")[0];
+        var img = document.querySelector(".favicon");
 
         btn.onclick = function() {
-            modal.style.display = 'flex';
-        }
+            modal.classList.add('show');
+        };
 
-            close.onclick = function() {
-                modal.style.display = "none";
-            };
+        close.onclick = function() {
+            modal.classList.remove('show');
+        };
 
         window.onclick = function(event) {
             if (event.target == modal) {
                 modal.style.display = "none";
             }
-        }
+        };
     </script>
 </body>
 </html>

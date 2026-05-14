@@ -18,7 +18,6 @@
 }
 
 body {
-    /* background: #000; */
     background: url("digital-light-vortex-stockcake.jpg") fixed no-repeat;
     background-size: 100% 106%;
     color: #e2e8f0;
@@ -105,7 +104,7 @@ button:hover {
 }
 
 .modal-header {
-    margin-bottom: 25px;
+    margin-bottom: 24px;
 }
 
 .modal-content {
@@ -161,13 +160,15 @@ textarea:focus, input[type="text"]:focus {
     cursor: pointer;
     float: right;
     padding: 2px 12px;
-    margin-top: -25px;
+    margin-top: -30px;
     font-family: 'Afacad Flux', sans-serif;
+    transform-origin: center center;
+    transform: translateY(2px);
 }
 
 .close:hover {
     box-shadow: none;
-    rotate: 90deg;
+    transform: rotate(90deg) translateY(2px);
 }
 
 .alert {
@@ -191,12 +192,13 @@ textarea:focus, input[type="text"]:focus {
     cursor: pointer;
     float: right;
     padding: 2px 12px;
+    transform-origin: center center;
+    transform: translateY(2px);
 }
 
 .btn-open:hover {
     box-shadow: none;
-    rotate: 90deg;
-    transform: translateY(-2px);
+    transform: rotate(90deg) translateY(2px);
 }
 
 .btn-group-vertical button, .btn-group-horizontal button {
@@ -226,6 +228,15 @@ textarea:focus, input[type="text"]:focus {
         0 0 8px #5d00ff,
         0 0 15px #00a6ff;
     transition: transform 0.3s ease;
+}
+
+.favicon:hover {
+    transform: scale(1.1);
+    box-shadow:
+        0 0 10px #5d00ff,
+        0 0 20px #00a6ff,
+        0 0 40px #5d00ff;
+    cursor: pointer;
 }
 
 @keyframes fadeSlide {
